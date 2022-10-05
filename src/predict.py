@@ -10,7 +10,6 @@ import albumentations.pytorch as AP
 import pandas as pd
 import torch
 import tqdm
-from sklearn.model_selection import KFold
 from torch.utils.data import DataLoader
 
 from data import ImageDataset
@@ -18,11 +17,6 @@ from data import ImageDataset
 
 def prepare_dataloader(args: argparse) -> tuple[DataLoader, pd.DataFrame]:
     filenames = sorted(glob.glob(os.path.join(args.imagedir, "*.png")))
-    if args.validate:
-        kfold = KFold(args.num_folds, shuffle=True, random_state=42)
-        val_indices = list(kfold.split(filenames))[args.fold_index][1]
-        filenames = [filenames[i] for i in val_indices]
-
     indices = [int(os.path.splitext(os.path.basename(x))[0]) for x in filenames]
     labels = pd.DataFrame(indices)
 
@@ -72,9 +66,6 @@ if __name__ == "__main__":
     parser.add_argument("imagedir")
     parser.add_argument("--image-size", type=int, default=384)
     parser.add_argument("--batch-size", type=int, default=32)
-    parser.add_argument("--num-folds", type=int, default=5)
-    parser.add_argument("--fold-index", type=int, default=0)
-    parser.add_argument("--validate", action="store_true", default=False)
     parser.add_argument("--use-tta", action="store_true", default=False)
     parser.add_argument("--return-probs", action="store_true", default=False)
     main(parser.parse_args())
