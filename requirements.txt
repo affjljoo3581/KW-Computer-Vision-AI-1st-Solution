@@ -1,0 +1,12 @@
+albumentations
+numpy
+omegaconf
+opencv_python_headless
+pandas
+pytorch_lightning
+scikit_learn
+sentencepiece
+timm
+torch
+tqdm
+wandb
