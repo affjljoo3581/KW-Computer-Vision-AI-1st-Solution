@@ -1,0 +1,33 @@
+data:
+  train:
+    filenames: resources/dirty_mnist_2nd/*.png
+    labels: resources/dirty_mnist_2nd_answer.csv
+  validation:
+    filenames: resources/val_dirty_mnist_2nd/*.png
+    labels: resources/val_dirty_mnist_2nd_answer.csv
+  image_size: 384
+
+model:
+  model_name: tf_efficientnetv2_l_in21k
+  pretrained: true
+  in_chans: 1
+  num_classes: 26
+  drop_rate: 0.5
+  drop_path_rate: 0.2
+
+optim:
+  opt: fusedadam
+  lr: 1e-3
+  betas: [0.9, 0.999]
+  eps: 1e-6
+  weight_decay: 1e-5
+  filter_bias_and_bn: false
+
+train:
+  epochs: 30
+  batch_size: 32
+  accumulate_grad_batches: 1
+  gradient_clip_val: 0.0
+  gradient_checkpointing: false
+  validation_interval: 0.2
+  log_every_n_steps: 10
